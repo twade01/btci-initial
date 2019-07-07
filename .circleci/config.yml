@@ -22,7 +22,7 @@ jobs:
           at: ~/packer
       - run:
           name: Build base ami
-          command: ./packer/build.sh base ./packer/base.json
+          command: sudo ./packer/build.sh base ./packer/base.json
           no_output_timeout: 30m
       - persist_to_workspace:
           root: .
