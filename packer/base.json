@@ -4,7 +4,7 @@
       "AMI: amd64 hvm:ebs-ssd",
       "     see the *_ami variables below for specific names",
       "base_ami should be latest Ubuntu AMI",
-      "curl -sSL 'https://cloud-images.ubuntu.com/query/xenial/server/released.current.txt' | grep us-east-1 | grep hvm | grep -e 'ebs' | awk '{print $8;}'",
+      "curl -sSL 'https://cloud-images.ubuntu.com/query/xenial/server/released.current.txt' | grep us-west-1 | grep hvm | grep -e 'ebs' | awk '{print $8;}'",
       ""
     ],
     "builders": [
@@ -12,10 +12,10 @@
         "ami_description": "{{user `ami_name`}} AMI",
         "ami_name": "{{user `ami_name`}} {{timestamp}}",
         "ami_regions": [
-          "us-east-1"
+          "us-west-1"
         ],
         "instance_type": "t2.micro",
-        "region": "us-east-1",
+        "region": "us-west-1",
         "run_tags": {
           "ami-create": "{{user `ami_name`}}"
         },
