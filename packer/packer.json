@@ -14,7 +14,7 @@
       "type": "amazon-ebs",
       "access_key": "{{user `aws_access_key`}}",
       "secret_key": "{{user `aws_secret_key`}}",
-      "profile": "{{ user `aws_profile`}}",
+      // "profile": "{{ user `aws_profile`}}",
       "region": "{{user `aws_region`}}",
       "instance_type": "t2.micro",
       "source_ami_filter": {
