@@ -42,7 +42,7 @@
         "sudo apt-get install python -y",
         "curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py",
         "python get-pip.py --user",
-        "pip install ansible==2.7.9"
+        "/home/ubuntu/.local/bin/pip install ansible==2.7.9"
     ]}, 
       {
         "type": "ansible-local",
