@@ -45,11 +45,15 @@
         GOPATH: /usr/local/go/bin/
         GOROOT: /usr/local/go/
 
+    - name: find btcd
+      shell: sudo updatedb
+      register: found
+
+    - debug:
+        var: found
+
     - name: Verify btcd
       shell: /usr/local/go/bin/btcd -v
-
-    - name: Enable btcd at startup
-      shell: btcd -v
 
     - name: Start btcd at reboot in crontab
       cron:
