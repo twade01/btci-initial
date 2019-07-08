@@ -31,7 +31,7 @@
     - name: Checkout btcd repo
       git:
         repo: https://github.com/btcsuite/btcd.git
-        dest: /usr/local/go/src/
+        dest: /usr/local/go/src/btcsuite/
 
     - name: Install btcd
       shell: cd $GOROOT/src/github.com/btcsuite/btcd && GO111MODULE=on go install -v . ./cmd/...
