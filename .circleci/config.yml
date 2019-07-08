@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run:
           name: Validate Templates
-          command: ls *.json | xargs -I{} packer validate {}
+          command: ls ./packer/*.json | xargs -I{} packer validate {}
 
   packer-build-ami:
     docker:
