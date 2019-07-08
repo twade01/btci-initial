@@ -55,7 +55,7 @@
     #     var: found
 
     - name: Verify btcd
-      shell: /usr/local/go/bin/btcd -v
+      shell: /usr/local/go/bin/btcd -h
 
     - name: Start btcd at reboot in crontab
       cron:
