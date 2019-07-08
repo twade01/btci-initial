@@ -1,0 +1,44 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: true    # gather OS info that is made available for tasks/roles
+  become: yes           # majority of CIS tasks require root
+
+  vars:
+    - go_ver: go1.12.6.linux-amd64.tar.gz
+
+  roles:
+  - common
+
+  tasks:
+
+    - name: Download go
+      shell: 'wget https://dl.google.com/go/{{go_ver}}'
+
+    - name: Extract go
+      shell: 'tar -C /usr/local -xzf {{go_ver}}'
+
+    - name: Set go path
+      shell: export PATH=$PATH:/usr/local/go/bin
+
+    - name: Verify go
+      shell: go version
+      register: go_output
+
+    - debug:
+        var: go_output
+
+    - name: Install btcd
+      shell: cd $GOPATH/src/github.com/btcsuite/btcd && GO111MODULE=on go install -v . ./cmd/...
+
+    - name: Verify btcd
+      shell: btcd -v
+
+    - name: Enable btcd at startup
+      shell: btcd -v
+
+    - name: Start btcd at reboot in crontab
+      cron:
+        name: "Start btcd at reboot"
+        special_time: reboot
+        job: "btcd &"
