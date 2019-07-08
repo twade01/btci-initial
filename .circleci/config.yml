@@ -20,7 +20,7 @@ jobs:
           name: Set creds
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              mkdir ~/.aws && mkdir ~/.aws/credentials
+              mkdir ~/.aws
               echo [default] >> ~/.aws/credentials
               echo aws_access_key_id=${awsa} >> ~/.aws/credentials
               echo aws_secret_access_key=${awss} >> ~/.aws/credentials
