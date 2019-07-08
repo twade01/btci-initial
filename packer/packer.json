@@ -1,6 +1,6 @@
 {
     "variables": {
-      "name": "packer-ubuntu-amd64-btcd-{{isotime \"2006-01-02-1504\"}}",
+      "name": "packer-ubuntu-amd64-app-{{isotime \"2006-01-02-1504\"}}",
       "version": "{{isotime \"2006-01-02-1504\"}}",
       "aws_region": "us-west-1",
       "aws_access_key": "",
@@ -39,7 +39,7 @@
     "provisioners": [{
       "type": "shell",
       "inline": [
-        "apt-get install python",
+        "sudo apt-get install python",
         "curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py",
         "python get-pip.py",
         "sudo pip install ansible==2.7.9"
