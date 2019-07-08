@@ -47,6 +47,8 @@
 
     - name: find btcd
       shell: sudo updatedb
+    - name: locate btcd
+      shell: sudo locate btcd
       register: found
 
     - debug:
