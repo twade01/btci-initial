@@ -39,7 +39,7 @@ jobs:
             fi
       - run:
           name: Build base ami
-          command: packer build -var 'aws_access_key=${awsa}' -var 'aws_secret_key=${awss}' ./packer/packer.json
+          command: packer build ./packer/packer.json
           no_output_timeout: 30m
 
   terraform-plan:
