@@ -31,10 +31,10 @@ jobs:
       - run:
           name: Build base ami
           command: packer build ./packer/packer.json
-          # environment:
-          #   AWS_ACCESS_KEY_ID: ${awsa}
-          #   AWS_SECRET_ACCESS_KEY: ${awss}
-          #   AWS_DEFAULT_REGION: "us-west-1"
+          environment:
+            AWS_ACCESS_KEY_ID: ${awsa}
+            AWS_SECRET_ACCESS_KEY: ${awss}
+            AWS_DEFAULT_REGION: "us-west-1"
           no_output_timeout: 30m
 
   terraform-plan:
@@ -68,10 +68,10 @@ jobs:
       - run:
           name: terraform apply
           command: terraform init
-          # environment:
-          #   AWS_ACCESS_KEY_ID: ${awsa}
-          #   AWS_SECRET_ACCESS_KEY: ${awss}
-          #   AWS_DEFAULT_REGION: "us-west-1"
+          environment:
+            AWS_ACCESS_KEY_ID: ${awsa}
+            AWS_SECRET_ACCESS_KEY: ${awss}
+            AWS_DEFAULT_REGION: "us-west-1"
 
 # ------------------------------------------------------------------------------------
 
