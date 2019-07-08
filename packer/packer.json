@@ -38,13 +38,6 @@
     }],
     "provisioners": [{
       "type": "shell",
-      "scripts": [
-        "scripts/configure-timezone.sh",
-        "scripts/clean-apt.sh"
-      ],
-      "execute_command": "sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
-    }, {
-      "type": "shell",
       "inline": [
         "apt-get install python",
         "curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py",
