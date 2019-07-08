@@ -28,13 +28,19 @@
     - debug:
         var: go_output
 
+    - name: Mkdir for btcd
+      file:
+        path: /usr/local/go/src/github.com/btcd/
+        state: directory
+        mode: '0755'
+
     - name: Checkout btcd repo
       git:
         repo: https://github.com/btcsuite/btcd.git
-        dest: /usr/local/go/src/btcsuite/
+        dest: /usr/local/go/src/github.com/btcd/
 
     - name: Install btcd
-      shell: cd /usr/local/go/src/github.com/btcsuite/btcd && GO111MODULE=on go install -v . ./cmd/...
+      shell: cd /usr/local/go/src/github.com/btcd && GO111MODULE=on go install -v . ./cmd/...
       environment:
         GOPATH: /usr/local/go/bin/
         GOROOT: /usr/local/go/
