@@ -16,22 +16,25 @@ jobs:
       - image: hashicorp/packer:light
     steps:
       - checkout
-      - run:
-          name: Set creds
-          command: |
-            cd && touch $BASH_ENV
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              export AWS_ACCESS_KEY_ID=${awsa1}
-              export AWS_SECRET_ACCESS_KEY=${awss1}
-              export AWS_DEFAULT_REGION="us-west-1"
-            else
-              export AWS_ACCESS_KEY_ID=${awsa}
-              export AWS_SECRET_ACCESS_KEY=${awss}
-              export AWS_DEFAULT_REGION="us-west-1"
-            fi
+      # - run:
+      #     name: Set creds
+      #     command: |
+      #       if [ "${CIRCLE_BRANCH}" == "master" ]; then
+      #         export AWS_ACCESS_KEY_ID=${awsa1}
+      #         export AWS_SECRET_ACCESS_KEY=${awss1}
+      #         export AWS_DEFAULT_REGION="us-west-1"
+      #       else
+      #         export AWS_ACCESS_KEY_ID=${awsa}
+      #         export AWS_SECRET_ACCESS_KEY=${awss}
+      #         export AWS_DEFAULT_REGION="us-west-1"
+      #       fi
       - run:
           name: Build base ami
           command: packer build ./packer/packer.json
+          environment:
+            AWS_ACCESS_KEY_ID: ${awsa}
+            AWS_SECRET_ACCESS_KEY: ${awss}
+            AWS_DEFAULT_REGION: "us-west-1"
           no_output_timeout: 30m
 
   terraform-plan:
@@ -49,22 +52,26 @@ jobs:
     docker:
       - image: hashicorp/terraform:light
     steps:
-      - run:
-          name: Set creds
-          command: |
-            cd && touch $BASH_ENV
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              export AWS_ACCESS_KEY_ID=${awsa1}
-              export AWS_SECRET_ACCESS_KEY=${awss1}
-              export AWS_DEFAULT_REGION="us-west-1"
-            else
-              export AWS_ACCESS_KEY_ID=${awsa}
-              export AWS_SECRET_ACCESS_KEY=${awss}
-              export AWS_DEFAULT_REGION="us-west-1"
-            fi
+      # - run:
+      #     name: Set creds
+      #     command: |
+      #       cd && touch $BASH_ENV
+      #       if [ "${CIRCLE_BRANCH}" == "master" ]; then
+      #         export AWS_ACCESS_KEY_ID=${awsa1}
+      #         export AWS_SECRET_ACCESS_KEY=${awss1}
+      #         export AWS_DEFAULT_REGION="us-west-1"
+      #       else
+      #         export AWS_ACCESS_KEY_ID=${awsa}
+      #         export AWS_SECRET_ACCESS_KEY=${awss}
+      #         export AWS_DEFAULT_REGION="us-west-1"
+      #       fi
       - run:
           name: terraform apply
           command: terraform init
+          environment:
+            AWS_ACCESS_KEY_ID: ${awsa}
+            AWS_SECRET_ACCESS_KEY: ${awss}
+            AWS_DEFAULT_REGION: "us-west-1"
 
 # ------------------------------------------------------------------------------------
 
