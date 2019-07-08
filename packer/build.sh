@@ -4,6 +4,9 @@ set -e
 # load our helper functions
 source ./packer/common.sh
 
+# Install awscli
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install awscli
+
 # check that the tools we require are present
 package_check
 
