@@ -27,11 +27,11 @@ jobs:
               echo [default] >> ~/.aws/config
               echo region=us-west-1 >> ~/.aws/config
               echo output=text >> ~/.aws/config
-              export AWS_ACCESS_KEY_ID=${awsa}
-              export AWS_SECRET_ACCESS_KEY=${awss}
+              export AWS_ACCESS_KEY_ID="${awsa}"
+              export AWS_SECRET_ACCESS_KEY="${awss}"
               export AWS_DEFAULT_REGION="us-east-1"
-              export aws_access_key_id=${awsa}
-              export aws_secret_access_key=${awss}
+              export aws_access_key_id="${awsa}"
+              export aws_secret_access_key="${awss}"
             else
               export AWS_ACCESS_KEY_ID=${awsa}
               export AWS_SECRET_ACCESS_KEY=${awss}
@@ -39,7 +39,7 @@ jobs:
             fi
       - run:
           name: Build base ami
-          command: packer build -var 'aws_access_key="${awsa}"' -var 'aws_secret_key="${awss}"' ./packer/packer.json
+          command: packer build -var 'aws_access_key=${awsa}' -var 'aws_secret_key=${awss}' ./packer/packer.json
           no_output_timeout: 30m
 
   terraform-plan:
