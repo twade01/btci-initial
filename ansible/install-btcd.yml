@@ -42,17 +42,17 @@
     - name: Install btcd
       shell: cd /usr/local/go/src/github.com/btcd && GO111MODULE=on /usr/local/go/bin/go install -v . ./cmd/...
       environment:
-        GOPATH: /usr/local/go/bin/
+        GOPATH: /usr/local/go/
         GOROOT: /usr/local/go/
 
-    - name: find btcd
-      shell: sudo updatedb
-    - name: locate btcd
-      shell: sudo locate btcd
-      register: found
-
-    - debug:
-        var: found
+    # - name: find btcd
+    #   shell: sudo updatedb
+    # - name: locate btcd
+    #   shell: sudo locate btcd
+    #   register: found
+# 
+    # - debug:
+    #     var: found
 
     - name: Verify btcd
       shell: /usr/local/go/bin/btcd -v
