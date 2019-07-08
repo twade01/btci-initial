@@ -46,7 +46,7 @@
         GOROOT: /usr/local/go/
 
     - name: Verify btcd
-      shell: btcd -v
+      shell: /usr/local/go/bin/btcd -v
 
     - name: Enable btcd at startup
       shell: btcd -v
