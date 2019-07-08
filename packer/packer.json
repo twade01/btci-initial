@@ -2,7 +2,7 @@
     "variables": {
       "name": "packer-ubuntu-amd64-btcd-{{isotime \"2006-01-02-1504\"}}",
       "version": "{{isotime \"2006-01-02-1504\"}}",
-      "aws_region": "us-east-1",
+      "aws_region": "us-west-1",
       "aws_access_key": "",
       "aws_secret_key": "",
       "aws_profile": "{{env `AWS_PROFILE`}}",

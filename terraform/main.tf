@@ -6,7 +6,7 @@ terraform {
   backend "s3" {
     bucket  = "terrastate-prod"
     key     = "terraform.tfstate"
-    region  = "us-east-1"
+    region  = "us-west-1"
     encrypt = true
   }
 }
