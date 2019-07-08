@@ -30,11 +30,8 @@
 
     - name: Checkout btcd repo
       git:
-        repo: git@github.com/btcsuite/btcd.git
+        repo: https://github.com/btcsuite/btcd.git
         dest: /usr/local/go/src/
-      environment:
-        GOPATH: /usr/local/go/bin/
-        GOROOT: /usr/local/go/
 
     - name: Install btcd
       shell: cd $GOROOT/src/github.com/btcsuite/btcd && GO111MODULE=on go install -v . ./cmd/...
