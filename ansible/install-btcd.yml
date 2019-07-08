@@ -54,11 +54,15 @@
     # - debug:
     #     var: found
 
-    - name: Verify btcd
-      shell: /usr/local/go/bin/btcd
+    - name: Run btcd
+      shell: /usr/local/go/bin/btcd &
+      register: run_btcd
+
+    - debug:
+        var: run_btcd
 
     - name: Start btcd at reboot in crontab
       cron:
         name: "Start btcd at reboot"
         special_time: reboot
-        job: "btcd &"
+        job: "/usr/local/go/bin/btcd &"
