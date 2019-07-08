@@ -1,0 +1,68 @@
+{
+    "variables": {
+      "name": "ubuntu-amd64-btcd-{{isotime | clean_resource_name}}",
+      "version": "{{isotime \"2006-01-02-1504\"}}",
+      "aws_region": "us-west-1",
+      "aws_access_key": "",
+      "aws_secret_key": "",
+      "aws_profile": "{{env `AWS_PROFILE`}}",
+      "vpc_id": "",
+      "subnet_id": "",
+      "security_group_id": ""
+    },
+    "builders": [{
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "profile": "{{ user `aws_profile`}}",
+      "region": "{{user `aws_region`}}",
+      "instance_type": "t2.micro",
+      "source_ami_filter": {
+        "filters": {
+        "virtualization-type": "hvm",
+        "name": "ubuntu/images/*ubuntu-xenial-16.04-amd64-server-*",
+        "root-device-type": "ebs"
+        },
+        "owners": ["099720109477"],
+        "most_recent": true
+      },
+      "vpc_id": "{{user `vpc_id`}}",
+      "subnet_id": "{{user `subnet_id`}}",
+      "security_group_id": "{{user `security_group_id`}}",
+      "ssh_username": "ubuntu",
+      "ami_name": "{{user `name`}}-{{user `version`}}",
+      "ami_description": "AMI for {{user `name`}}",
+      "tags": {
+        "Name": "{{user `name`}}",
+        "Version": "{{user `version`}}"
+      }
+    }],
+    "provisioners": [{
+      "type": "shell",
+      "scripts": [
+        "scripts/update-apt.sh",
+        "scripts/configure-timezone.sh",
+        "scripts/clean-apt.sh"
+      ],
+      "execute_command": "sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
+    }, {
+      "type": "shell",
+      "inline": [
+        "sudo pip install ansible==2.7.9"
+    ]}, 
+      {
+        "type": "ansible-local",
+        "playbook_file": "ansible/install-btcd.yaml",
+        "role_paths": [
+          "ansible/roles/common"
+        ],
+        "playbook_dir": "ansible",
+        "galaxy_file": "ansible/requirements.yaml"
+      },
+      {
+        "type": "shell",
+        "inline": [
+          "rm .ssh/authorized_keys ; sudo rm /root/.ssh/authorized_keys"
+        ]
+    }]
+}
