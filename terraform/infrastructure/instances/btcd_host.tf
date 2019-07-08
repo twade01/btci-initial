@@ -17,7 +17,7 @@ resource "aws_instance" "web" {
     "${aws_security_group.web.id}",
   ]
 
-  # tags {
-  #   environment = "${var.environment}"
-  # }
+  tags = {
+    environment = "${var.environment}"
+  }
 }
