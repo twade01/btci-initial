@@ -39,7 +39,7 @@
     "provisioners": [{
       "type": "shell",
       "inline": [
-        "sudo apt-get install python",
+        "sudo apt-get install python -y",
         "curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py",
         "python get-pip.py",
         "sudo pip install ansible==2.7.9"
