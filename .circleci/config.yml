@@ -2,37 +2,69 @@ version: 2
 
 jobs:
 
-  validate:
+  packer-validate:
     docker:
-      - image: hashicorp/packer:1.1.1
-    working_directory: ~/packer
+      - image: hashicorp/packer:light
     steps:
       - checkout
       - run:
-          name: Validate base
-          command: packer validate ./packer/base.json
+          name: Validate Templates
+          command: ls *.json | xargs -I{} packer validate {}
 
-  build-base-ami:
+  packer-build-ami:
     docker:
-      - image: hashicorp/packer:1.1.1
-    working_directory: ~/packer
+      - image: hashicorp/packer:light
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/packer
       - run:
-          name: Modify build script
-          command: chmod +x ./packer/build.sh
+          name: Set creds
+          command: |
+            cd && touch $BASH_ENV
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              export AWS_ACCESS_KEY_ID=${awsa1}
+              export AWS_SECRET_ACCESS_KEY=${awss1}
+              export AWS_DEFAULT_REGION="us-west-1"
+            else
+              export AWS_ACCESS_KEY_ID=${awsa}
+              export AWS_SECRET_ACCESS_KEY=${awss}
+              export AWS_DEFAULT_REGION="us-west-1"
+            fi
       - run:
           name: Build base ami
-          command: ./packer/build.sh base ./packer/base.json
+          command: packer build ./packer/packer.json
           no_output_timeout: 30m
-      - persist_to_workspace:
-          root: .
-          paths:
-            - manifest-base.json
-      - store_artifacts:
-          path: manifest-base.json
+
+  terraform-plan:
+    docker:
+      - image: hashicorp/terraform:light
+    steps:
+      - run:
+          name: terraform init
+          command: terraform init
+      - run:
+          name: terraform plan
+          command: terraform plan
+
+  terraform-apply:
+    docker:
+      - image: hashicorp/terraform:light
+    steps:
+      - run:
+          name: Set creds
+          command: |
+            cd && touch $BASH_ENV
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              export AWS_ACCESS_KEY_ID=${awsa1}
+              export AWS_SECRET_ACCESS_KEY=${awss1}
+              export AWS_DEFAULT_REGION="us-west-1"
+            else
+              export AWS_ACCESS_KEY_ID=${awsa}
+              export AWS_SECRET_ACCESS_KEY=${awss}
+              export AWS_DEFAULT_REGION="us-west-1"
+            fi
+      - run:
+          name: terraform apply
+          command: terraform init
 
 # ------------------------------------------------------------------------------------
 
@@ -40,7 +72,13 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - validate
-      - build-base-ami:
+      - packer-validate
+      - packer-build-ami:
           requires:
-            - validate
+            - packer-validate
+      - terraform-plan:
+          requires:
+            - packer-build-ami
+      - terraform-apply:
+          requires:
+            - terraform-plan
