@@ -46,9 +46,9 @@
       },
       {
         "scripts": [
-          "./tasks/baseline.sh",
-          "./tasks/cleanup.sh",
-          "./tasks/debug.sh"
+          "./packer/tasks/baseline.sh",
+          "./packer/tasks/cleanup.sh",
+          "./packer/tasks/debug.sh"
         ],
         "type": "shell"
       }
