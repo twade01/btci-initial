@@ -39,7 +39,6 @@
     "provisioners": [{
       "type": "shell",
       "scripts": [
-        "scripts/update-apt.sh",
         "scripts/configure-timezone.sh",
         "scripts/clean-apt.sh"
       ],
