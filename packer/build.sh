@@ -2,7 +2,7 @@
 set -e
 
 # load our helper functions
-source ./common.sh
+source common.sh
 
 # check that the tools we require are present
 package_check
