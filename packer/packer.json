@@ -1,6 +1,6 @@
 {
     "variables": {
-      "name": "ubuntu-amd64-btcd-{{isotime}}",
+      "name": "ubuntu-amd64-btcd-{{isotime | clean_resource_name}}",
       "version": "{{isotime \"2006-01-02-1504\"}}",
       "aws_region": "us-west-1",
       "aws_access_key": "",
