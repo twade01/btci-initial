@@ -30,11 +30,7 @@ jobs:
             fi
       - run:
           name: Build base ami
-          command: packer build ./packer/packer.json
-          environment:
-            AWS_ACCESS_KEY_ID: ${awsa}
-            AWS_SECRET_ACCESS_KEY: ${awss}
-            AWS_DEFAULT_REGION: "us-east-1"
+          command: packer build -var 'aws_access_key=${awsa}' -var 'aws_secret_key=${awss}' ./packer/packer.json
           no_output_timeout: 30m
 
   terraform-plan:
