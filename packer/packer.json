@@ -51,7 +51,6 @@
           "./ansible/roles/common"
         ],
         "playbook_dir": "./ansible",
-        "galaxy_file": "./ansible/requirements.yml"
       },
       {
         "type": "shell",
