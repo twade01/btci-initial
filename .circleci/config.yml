@@ -46,10 +46,10 @@ jobs:
     steps:
       - run:
           name: terraform init
-          command: cd terraform && terraform init
+          command: cd ./terraform/ && terraform init
       - run:
           name: terraform plan
-          command: cd terraform && terraform plan
+          command: cd ./terraform/ && terraform plan
 
   terraform-apply:
     docker:
