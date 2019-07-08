@@ -4,7 +4,7 @@ jobs:
 
   validate:
     docker:
-      - image: hashicorp/packer:latest
+      - image: hashicorp/packer:1.1.1
     working_directory: ~/packer
     steps:
       - checkout
@@ -14,7 +14,7 @@ jobs:
 
   build-base-ami:
     docker:
-      - image: hashicorp/packer:latest
+      - image: hashicorp/packer:1.1.1
     working_directory: ~/packer
     steps:
       - checkout
