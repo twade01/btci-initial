@@ -10,7 +10,7 @@ jobs:
       - checkout
       - run:
           name: Validate base
-          command: sudo packer validate ./packer/base.json
+          command: packer validate ./packer/base.json
 
   build-base-ami:
     docker:
