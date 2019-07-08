@@ -1,3 +1,11 @@
+
+locals {
+  subnets_ids = [
+    "${var.public-a-subnet-id}",
+    "${var.public-b-subnet-id}",
+  ]
+}
+
 resource "aws_alb" "web" {
   name            = "web-${var.environment}"
   internal        = false
