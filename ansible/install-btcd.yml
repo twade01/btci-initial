@@ -22,7 +22,7 @@
       shell: export PATH=$PATH:/usr/local/go/bin
 
     - name: Verify go
-      shell: go version
+      command: go version
       register: go_output
 
     - debug:
