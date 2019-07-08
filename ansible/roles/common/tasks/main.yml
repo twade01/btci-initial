@@ -2,6 +2,6 @@
 
 # Ensure all packages have been patched
 - name: upgrade all packages
-  yum:
+  apt:
     name: "*"
     state: latest
