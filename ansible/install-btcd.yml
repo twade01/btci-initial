@@ -28,8 +28,19 @@
     - debug:
         var: go_output
 
+    - name: Checkout btcd repo
+      git:
+        repo: git@github.com/btcsuite/btcd.git
+        dest: /usr/local/go/src/
+      environment:
+        GOPATH: /usr/local/go/bin/
+        GOROOT: /usr/local/go/
+
     - name: Install btcd
-      shell: cd $GOPATH/src/github.com/btcsuite/btcd && GO111MODULE=on go install -v . ./cmd/...
+      shell: cd $GOROOT/src/github.com/btcsuite/btcd && GO111MODULE=on go install -v . ./cmd/...
+      environment:
+        GOPATH: /usr/local/go/bin/
+        GOROOT: /usr/local/go/
 
     - name: Verify btcd
       shell: btcd -v
