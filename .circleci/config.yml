@@ -21,8 +21,11 @@ jobs:
       - attach_workspace:
           at: ~/packer
       - run:
+          name: Modify build script
+          command: chmod +x ./packer/build.sh
+      - run:
           name: Build base ami
-          command: sudo ./packer/build.sh base ./packer/base.json
+          command: ./packer/build.sh base ./packer/base.json
           no_output_timeout: 30m
       - persist_to_workspace:
           root: .
