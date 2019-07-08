@@ -46,10 +46,10 @@ jobs:
     steps:
       - run:
           name: terraform init
-          command: terraform init
+          command: cd terraform && terraform init
       - run:
           name: terraform plan
-          command: terraform plan
+          command: cd terraform && terraform plan
 
   terraform-apply:
     docker:
@@ -58,10 +58,16 @@ jobs:
       - run:
           name: Set creds
           command: |
-            cd && touch $BASH_ENV
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              export AWS_ACCESS_KEY_ID=${awsa}
-              export AWS_SECRET_ACCESS_KEY=${awss}
+              mkdir ~/.aws
+              echo [default] >> ~/.aws/credentials
+              echo aws_access_key_id=${awsa} >> ~/.aws/credentials
+              echo aws_secret_access_key=${awss} >> ~/.aws/credentials
+              echo [default] >> ~/.aws/config
+              echo region=us-west-1 >> ~/.aws/config
+              echo output=text >> ~/.aws/config
+              export AWS_ACCESS_KEY_ID="${awsa}"
+              export AWS_SECRET_ACCESS_KEY="${awss}"
               export AWS_DEFAULT_REGION="us-west-1"
             else
               export AWS_ACCESS_KEY_ID=${awsa}
