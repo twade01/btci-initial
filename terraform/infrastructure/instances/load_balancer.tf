@@ -7,7 +7,7 @@ locals {
 }
 
 resource "aws_alb" "web" {
-  count = "${var.count}"
+  # count = "${var.count}"
   name            = "web-${var.environment}"
   internal        = false
   security_groups = ["${aws_security_group.web-alb.id}"]
@@ -26,7 +26,7 @@ resource "aws_alb_target_group" "web" {
 }
 
 resource "aws_alb_listener" "web" {
-  load_balancer_arn = "${aws_alb.web.arn[count.index]}"
+  load_balancer_arn = "${aws_alb.web.arn}"
   port              = "80"
   protocol          = "HTTP"
 
