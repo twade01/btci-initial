@@ -3,5 +3,5 @@ output "web-alb-dns-name" {
 }
 
 output "web-instance-ips" {
-  value = "${aws_instance.web.*.public_ip}"
+  value = "${aws_instance.web.*.public_ip[count.index]}"
 }

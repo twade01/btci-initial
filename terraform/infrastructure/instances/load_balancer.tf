@@ -26,7 +26,7 @@ resource "aws_alb_target_group" "web" {
 }
 
 resource "aws_alb_listener" "web" {
-  load_balancer_arn = "${aws_alb.web.arn}"
+  load_balancer_arn = "${aws_alb.web.arn[count.index]}"
   port              = "80"
   protocol          = "HTTP"
 
