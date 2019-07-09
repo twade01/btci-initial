@@ -96,12 +96,14 @@ jobs:
               export AWS_DEFAULT_REGION="us-west-1"
             fi
       - run:
+          name: terraform init
+          command: cd ./terraform/ && terraform init
+      - run:
+          name: terraform plan
+          command: cd ./terraform/ && terraform plan
+      - run:
           name: terraform apply
           command: cd ./terraform/ && terraform init && terraform apply
-          environment:
-            AWS_ACCESS_KEY_ID: ${awsa}
-            AWS_SECRET_ACCESS_KEY: ${awss}
-            AWS_DEFAULT_REGION: "us-west-1"
 
 # ------------------------------------------------------------------------------------
 
