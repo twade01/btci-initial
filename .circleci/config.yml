@@ -97,7 +97,7 @@ jobs:
             fi
       - run:
           name: terraform apply
-          command: terraform init
+          command: cd ./terraform/ && terraform init
           environment:
             AWS_ACCESS_KEY_ID: ${awsa}
             AWS_SECRET_ACCESS_KEY: ${awss}
