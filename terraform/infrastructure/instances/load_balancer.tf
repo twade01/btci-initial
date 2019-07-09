@@ -11,7 +11,7 @@ resource "aws_alb" "web" {
   name            = "web-${var.environment}"
   internal        = false
   security_groups = ["${aws_security_group.web-alb.id}"]
-  subnets         = ["${element(local.subnets_ids, count.index)}"]
+  subnets         = ["${element(local.subnets_ids)}"]
 
   tags = {
     environment = "${var.environment}"
