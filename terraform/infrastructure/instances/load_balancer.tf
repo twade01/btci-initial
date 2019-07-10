@@ -1,17 +1,10 @@
 
-locals {
-  subnets_ids = [
-    "${var.public-a-subnet-id}",
-    "${var.public-b-subnet-id}",
-  ]
-}
-
 resource "aws_alb" "web" {
   # count = "${var.count}"
   name            = "web-${var.environment}"
   internal        = false
   security_groups = ["${aws_security_group.web-alb.id}"]
-  subnets         = ["${element(local.subnets_ids, 2)}"]
+  subnets         = ["${aws_subnet.public.*.id}"]
 
   tags = {
     environment = "${var.environment}"
