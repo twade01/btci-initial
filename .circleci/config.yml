@@ -44,7 +44,7 @@ jobs:
     docker:
       - image: hashicorp/terraform:light
     steps:
-      - checkout:
+      - checkout
       - run:
           name: Set creds
           command: |
