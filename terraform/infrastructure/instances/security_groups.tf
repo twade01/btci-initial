@@ -27,7 +27,7 @@ resource "aws_security_group" "web" {
 
   tags = {
     environment = "${var.environment}"
-    name        = "web-${var.environment}"
+    # name        = "web-${var.environment}"
   }
 }
 
@@ -60,6 +60,6 @@ resource "aws_security_group" "web-alb" {
 
   tags = {
     environment = "${var.environment}"
-    name        = "web-alb-${var.environment}"
+    # name        = "web-alb-${var.environment}"
   }
 }
