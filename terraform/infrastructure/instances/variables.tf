@@ -6,6 +6,6 @@ variable "vpc-cidr-block" {}
 variable "public-a-subnet-id" {}
 variable "public-b-subnet-id" {}
 
-# variable "count" {
-#   default = 1
-# }
+variable " countnum" {
+  default = 1
+}
