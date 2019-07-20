@@ -18,8 +18,12 @@
     - name: Extract go
       shell: 'tar -C /usr/local -xzf {{go_ver}}'
 
-    - name: Set go path
-      shell: export PATH=$PATH:/usr/local/go/bin
+    - name: Set Paths
+      shell: |
+        export PATH=$PATH:/usr/local/go/bin
+        export GOROOT=$HOME/go
+        export PATH=$PATH:$GOROOT/bin
+        export GOPATH=$HOME/projects/go/
 
     - name: Verify go
       command: /usr/local/go/bin/go version
@@ -43,19 +47,9 @@
       shell: cd /usr/local/go/src/github.com/btcd && GO111MODULE=on /usr/local/go/bin/go install -v . ./cmd/...
       environment:
         GOPATH: /usr/local/go/
-        GOROOT: /usr/local/go/
-
-    # - name: find btcd
-    #   shell: sudo updatedb
-    # - name: locate btcd
-    #   shell: sudo locate btcd
-    #   register: found
-# 
-    # - debug:
-    #     var: found
 
     - name: Run btcd
-      shell: /usr/local/go/bin/btcd &
+      shell: /usr/local/go/bin/btcd --simnet --rpcuser=testuser --rpcpass=testp4ssw0rd &
       register: run_btcd
 
     - debug:
