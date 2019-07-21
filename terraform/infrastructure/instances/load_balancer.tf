@@ -42,6 +42,7 @@ resource "aws_lb_listener" "web" {
     target_group_arn = "${aws_lb_target_group.web.arn}"
     type             = "forward"
   }
+}
 
 resource "aws_lb_listener" "web2" {
   load_balancer_arn = "${aws_lb.web.arn}"
@@ -52,6 +53,7 @@ resource "aws_lb_listener" "web2" {
     target_group_arn = "${aws_lb_target_group.web2.arn}"
     type             = "forward"
   }
+}
 
 resource "aws_lb_listener" "web3" {
   load_balancer_arn = "${aws_lb.web.arn}"
