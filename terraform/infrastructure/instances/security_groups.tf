@@ -25,8 +25,8 @@ resource "aws_security_group" "web" {
   }
 }
 
-resource "aws_security_group" "web-alb" {
-  name        = "web-alb"
+resource "aws_security_group" "web-lb" {
+  name        = "web-lb"
   description = "Web ALB"
   vpc_id      = "${var.vpc-id}"
 

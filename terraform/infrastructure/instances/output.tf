@@ -1,4 +1,4 @@
-output "web-alb-dns-name" {
+output "web-lb-dns-name" {
   value = "${aws_lb.web.dns_name}"
 }
 

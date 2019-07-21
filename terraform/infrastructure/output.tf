@@ -1,5 +1,5 @@
-output "web-alb-dns-name" {
-  value = "${module.instances.web-alb-dns-name}"
+output "web-lb-dns-name" {
+  value = "${module.instances.web-lb-dns-name}"
 }
 
 output "web-instance-ips" {

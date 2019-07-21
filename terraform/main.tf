@@ -16,8 +16,8 @@ module "production-infrastructure" {
   environment = "${var.environment}"
 }
 
-output "web-alb-dns-name" {
-  value = "${module.production-infrastructure.web-alb-dns-name}"
+output "web-lb-dns-name" {
+  value = "${module.production-infrastructure.web-lb-dns-name}"
 }
 
 output "web-instance-ips" {
