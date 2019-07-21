@@ -8,7 +8,6 @@ locals {
 resource "aws_instance" "web" {
   count = "${var.countnum}"
 
-  name          = "web-ci-${var.countnum}"
   ami           = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.micro"
 
