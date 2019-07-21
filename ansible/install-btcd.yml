@@ -76,9 +76,18 @@
     - debug:
         var: btcwallet_installed
 
+
+    - name: find 
+      shell: sudo updatedb
+    - name: locate
+      shell: sudo locate btcwallet
+      register: btcwallet_location
+    - debug:
+        var: btcwallet_location
+
   # Create a new simnet wallet
     - name: Create a new simnet wallet
-      shell: /usr/local/go/bin/btcwallet --simnet --create
+      shell: /usr/local/bin/btcwallet --simnet --create
       register: btcwallet_created
     - debug:
         var: btcwallet_created
