@@ -2,6 +2,12 @@ provider "aws" {
   region = "${var.region}"
 }
 
+module "production-state" {
+  source = "./state"
+
+  environment = "${var.environment}"
+}
+
 terraform {
   backend "s3" {
     bucket  = "terrastate-prod"
