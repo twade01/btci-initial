@@ -51,12 +51,12 @@ resource "aws_security_group" "web-alb" {
     security_groups = ["${aws_security_group.web.id}"]
   }
 
-  egress {
-    from_port       = 8333
-    to_port         = 8333
-    protocol        = "tcp"
-    cidr_blocks     = ["${var.vpc-cidr-block}"]
-  }
+  # egress {
+  #   from_port       = 8333
+  #   to_port         = 8333
+  #   protocol        = "tcp"
+  #   cidr_blocks     = ["${var.vpc-cidr-block}"]
+  # }
 
   tags = {
     environment = "${var.environment}"
