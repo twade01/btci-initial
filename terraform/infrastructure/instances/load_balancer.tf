@@ -4,7 +4,7 @@ resource "aws_lb" "web" {
   name            = "web-${var.environment}"
   internal        = false
   load_balancer_type = "network"
-  security_groups = ["${aws_security_group.web-alb.id}"]
+  # security_groups = ["${aws_security_group.web-alb.id}"]
   subnets         = ["${var.public-a-subnet-id}", "${var.public-b-subnet-id}"]
 
   tags = {
