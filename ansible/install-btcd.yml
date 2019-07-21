@@ -48,8 +48,44 @@
       environment:
         GOPATH: /usr/local/go/
 
+###### TESTING ------------------------------------------------------------------------------------------------------------------------
+
+# https://blog.hlongvu.com/post/akad7de26t-Understanding-btcd-Part-1-BTCD-overview
+
+  # # Start btcd on simnet
+  #   - name: Run btcd for testing
+  #     shell: /usr/local/go/bin/btcd --simnet --rpcuser=testuser --rpcpass=testp4ssw0rd &
+  #     register: run_btcd1
+  #   - debug:
+  #       var: run_btcd1
+
+  # # Create test wallet
+  # # etc....
+  # # output tests
+  # # kill btcd
+
+  #   - name: btcctl - Unlock wallet
+  #     shell: /usr/local/go/bin/btcctl --rpcuser=testuser --rpcpass=testp4ssw0rd --wallet --simnet walletpassphrase "test" 600
+  #     register: run_btcctl_1
+  #   - debug:
+  #       var: run_btcctl_1
+
+  #   - name: btcctl - Generate Accounts
+  #     shell: /usr/local/go/bin/btcctl --rpcuser=testuser --rpcpass=testp4ssw0rd --simnet --wallet createnewaccount account1
+  #     register: run_btcctl_2
+  #   - debug:
+  #       var: run_btcctl_2
+
+  #   - name: btcctl - Generating Bitcoins
+  #     shell: /usr/local/go/bin/btcctl --rpcuser=testuser --rpcpass=testp4ssw0rd --simnet --wallet getnewaddress
+  #     register: run_btcctl_3
+  #   - debug:
+  #       var: run_btcctl_3
+
+###### END TESTING --------------------------------------------------------------------------------------------------------------------
+
     - name: Run btcd
-      shell: /usr/local/go/bin/btcd --simnet --rpcuser=testuser --rpcpass=testp4ssw0rd &
+      shell: /usr/local/go/bin/btcd &
       register: run_btcd
 
     - debug:
