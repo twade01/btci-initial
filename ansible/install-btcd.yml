@@ -70,8 +70,8 @@
     - name: Install btcwallet
       shell: cd /usr/local/go/src/github.com/btcwallet && /usr/local/go/bin/go install -v . ./cmd/...
       # shell: cd /usr/local/go/src/github.com/btcwallet && GO111MODULE=on /usr/local/go/bin/go install -v . ./cmd/...
-      environment:
-        GOPATH: /usr/local/go/
+      # environment:
+      #   GOPATH: /usr/local/go/
       register: btcwallet_installed
     - debug:
         var: btcwallet_installed
