@@ -55,7 +55,7 @@ resource "aws_lb_target_group_attachment" "web" {
 resource "aws_lb_target_group_attachment" "web2" {
   count = "${var.countnum}"
 
-  target_group_arn = "${aws_lb_target_group.web.arn}"
+  target_group_arn = "${aws_lb_target_group.web2.arn}"
   target_id        = "${element(aws_instance.web.*.id, count.index)}"
   port             = "18556"
 }
@@ -63,7 +63,7 @@ resource "aws_lb_target_group_attachment" "web2" {
 resource "aws_lb_target_group_attachment" "web3" {
   count = "${var.countnum}"
 
-  target_group_arn = "${aws_lb_target_group.web.arn}"
+  target_group_arn = "${aws_lb_target_group.web3.arn}"
   target_id        = "${element(aws_instance.web.*.id, count.index)}"
   port             = "18555"
 }
