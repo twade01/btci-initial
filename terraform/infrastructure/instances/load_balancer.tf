@@ -46,7 +46,7 @@ resource "aws_lb_listener" "web" {
 
 resource "aws_lb_listener" "web2" {
   load_balancer_arn = "${aws_lb.web.arn}"
-  port              = "8333"
+  port              = "18556"
   protocol          = "TCP"
 
   default_action {
@@ -57,7 +57,7 @@ resource "aws_lb_listener" "web2" {
 
 resource "aws_lb_listener" "web3" {
   load_balancer_arn = "${aws_lb.web.arn}"
-  port              = "8333"
+  port              = "18555"
   protocol          = "TCP"
 
   default_action {
