@@ -1,5 +1,5 @@
 output "web-alb-dns-name" {
-  value = "${aws_alb.web.dns_name}"
+  value = "${aws_lb.web.dns_name}"
 }
 
 output "web-instance-ips" {
