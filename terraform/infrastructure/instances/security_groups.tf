@@ -7,9 +7,7 @@ resource "aws_security_group" "web" {
     from_port   = 8333
     to_port     = 8333
     protocol    = "tcp"
-    # cidr_blocks = ["0.0.0.0/0"]
-    security_groups = ["${aws_security_group.web-lb.id}"]
-    # cidr_blocks = ["${var.vpc-cidr-block}"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # ingress {
@@ -23,8 +21,7 @@ resource "aws_security_group" "web" {
     from_port   = 8333
     to_port     = 8333
     protocol    = "tcp"
-    security_groups = ["${aws_security_group.web-lb.id}"]
-    # cidr_blocks = ["${var.vpc-cidr-block}"]
+    cidr_blocks = ["${var.vpc-cidr-block}"]
   }
 }
 
@@ -51,7 +48,7 @@ resource "aws_security_group" "web-lb" {
     from_port       = 8333
     to_port         = 8333
     protocol        = "tcp"
-    # cidr_blocks     = ["${var.vpc-cidr-block}"]
+    cidr_blocks     = ["${var.vpc-cidr-block}"]
     security_groups = ["${aws_security_group.web.id}"]
   }
 }
