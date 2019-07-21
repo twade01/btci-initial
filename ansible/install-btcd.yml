@@ -48,8 +48,88 @@
       environment:
         GOPATH: /usr/local/go/
 
+###### TESTING ------------------------------------------------------------------------------------------------------------------------ 
+  
+  # Start btcd on simnet 
+    - name: Run btcd for testing 
+      shell: /usr/local/go/bin/btcd --simnet --rpcuser=testuser --rpcpass=testp4ssw0rd & 
+      register: run_btcd1 
+    - debug: 
+        var: run_btcd1 
+ 
+  # Install btcwallet
+    - name: Mkdir for btcwallet
+      file:
+        path: /usr/local/go/src/github.com/btcwallet/
+        state: directory
+        mode: '0755'
+    - name: Checkout btcd repo
+      git:
+        repo: https://github.com/btcsuite/btcwallet.git
+        dest: /usr/local/go/src/github.com/btcwallet/
+    - name: Install btcwallet
+      shell: cd /usr/local/go/src/github.com/btcwallet && /usr/local/go/bin/go install -v . ./cmd/...
+      # shell: cd /usr/local/go/src/github.com/btcwallet && GO111MODULE=on /usr/local/go/bin/go install -v . ./cmd/...
+      environment:
+        GOPATH: /usr/local/go/
+      register: btcwallet_installed
+    - debug:
+        var: btcwallet_installed
+
+  # Create a new simnet wallet
+    - name: Create a new simnet wallet
+      shell: /usr/local/go/bin/btcwallet --simnet --create
+      register: btcwallet_created
+    - debug:
+        var: btcwallet_created
+
+  # Start btcwallet on simnet
+    - name: Start btcwallet on simnet
+      shell: /usr/local/go/bin/btcwallet --simnet --username=testuser --password=testp4ssw0rd
+      register: btcwallet_started
+    - debug:
+        var: btcwallet_started
+
+  # Create a new simnet bitcoin address
+    - name: Create a new simnet bitcoin address
+      shell: /usr/local/go/bin/btcctl --simnet --wallet --rpcuser=testuser --rpcpass=testp4ssw0rd getnewaddress
+      register: btcwallet_bit_addr
+    - debug:
+        var: btcwallet_bit_addr
+
+  # Restart btcd with the mining address generated
+    - name: Restart btcd with the mining address generated
+      shell: '/usr/local/go/bin/btcd --simnet --rpcuser=testuser --rpcpass=testp4ssw0rd --miningaddr={{}}'
+      register: btcwallet_mining
+    - debug:
+        var: btcwallet_mining
+
+  # Instruct btcd to generate enough initial blocks for the first coinbase to mature
+    - name: Instruct btcd to generate enough initial blocks for the first coinbase to mature
+      shell: /usr/local/go/bin/btcctl --simnet --rpcuser=testuser --rpcpass=testp4ssw0rd generate 100
+      register: btcwallet_genblocks
+    - debug:
+        var: btcwallet_genblocks
+
+  # Check the wallet balance to ensure the coins are available
+    - name: Check the wallet balance to ensure the coins are available
+      shell: /usr/local/go/bin/btcctl --simnet --rpcuser=testuser --rpcpass=testp4ssw0rd generate 100
+      register: btcwallet_balance
+    - debug:
+        var: btcwallet_balance
+
+  ### CLEANUP
+
+  # kill btcd
+  # kill btcwallet
+  # delete btcwallet repo
+  # delete btcwallet
+  # delete btcwallet executable
+ 
+###### END TESTING -------------------------------------------------------------------------------------------------------------------- 
+
     - name: Run btcd
-      shell: /usr/local/go/bin/btcd --simnet --rpcuser=testuser --rpcpass=testp4ssw0rd &
+      shell: /usr/local/go/bin/btcd &
       register: run_btcd
 
     - debug:
