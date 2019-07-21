@@ -7,6 +7,13 @@ references:
 working_directory: &working_directory
   ~/btci
 
+terraform_config: &terraform_config
+  docker:
+      - image: hashicorp/terraform:light
+  working_directory: *working_directory
+  environment:
+    BASH_ENV: /root/.bashrc
+
 repo_cache_key: &repo_cache_key
   v1-repo-{{ .Branch }}-{{ .Revision }}
 
@@ -20,6 +27,28 @@ save_repo: &save_repo
     paths:
       - *working_directory
 
+set_creds: &set_creds
+  run:
+    name: set_creds
+    command: |
+      if [ "${CIRCLE_BRANCH}" == "master" ]; then
+        mkdir ~/.aws
+        echo [default] >> ~/.aws/credentials
+        echo aws_access_key_id=${awsa} >> ~/.aws/credentials
+        echo aws_secret_access_key=${awss} >> ~/.aws/credentials
+        echo [default] >> ~/.aws/config
+        echo region=us-west-1 >> ~/.aws/config
+        echo output=text >> ~/.aws/config
+      else
+        mkdir ~/.aws
+        echo [default] >> ~/.aws/credentials
+        echo aws_access_key_id=${awsa} >> ~/.aws/credentials
+        echo aws_secret_access_key=${awss} >> ~/.aws/credentials
+        echo [default] >> ~/.aws/config
+        echo region=us-west-1 >> ~/.aws/config
+        echo output=text >> ~/.aws/config
+      fi
+
 set_terraform_environment: &set_terraform_environment
   run:
     name: Configure terraform environment
@@ -27,16 +56,8 @@ set_terraform_environment: &set_terraform_environment
       cd && touch $BASH_ENV
       if [ "${CIRCLE_BRANCH}" == "master" ]; then
         echo 'export TERRAFORM_ENVIRONMENT=production' >> $BASH_ENV
-        export AWS_ACCESS_KEY_ID=${awsa}
-        export AWS_SECRET_ACCESS_KEY=${awss}
-        export AWS_DEFAULT_REGION="us-west-1"
       else
         echo 'export TERRAFORM_ENVIRONMENT=staging' >> $BASH_ENV
-        # export AWS_ACCESS_KEY_ID="awsa$"
-        export AWS_ACCESS_KEY_ID=${awsa}
-        # export AWS_SECRET_ACCESS_KEY="awss$"
-        export AWS_SECRET_ACCESS_KEY=${awss}
-        export AWS_DEFAULT_REGION="us-west-1"
       fi
 
 terraform_init: &terraform_init
@@ -47,20 +68,21 @@ terraform_init: &terraform_init
       cd environments/$TERRAFORM_ENVIRONMENT
       terraform init
 
-apply_job: &apply_job
-  <<: *default_config
-  steps:
-    - *restore_repo
-    - *set_terraform_environment
-    - *terraform_init
-    - attach_workspace:
-        at: *working_directory
-    - run:
-        name: terraform apply
-        command: |
-          source $BASH_ENV
-          cd environments/$TERRAFORM_ENVIRONMENT
-          terraform apply --auto-approve ../../terraform.plan
+terraform_apply: &terraform_apply
+    <<: *terraform_config
+    steps:
+      - *restore_repo
+      - *set_creds
+      - *set_terraform_environment
+      - *terraform_init
+      - attach_workspace:
+          at: *working_directory
+      - run:
+          name: terraform apply
+          command: |
+            source $BASH_ENV
+            cd environments/$TERRAFORM_ENVIRONMENT
+            terraform apply --auto-approve ../../terraform.plan
 
 # End Functions and Ref/Vars ============================================================================================
 
@@ -82,25 +104,7 @@ jobs:
       - image: hashicorp/packer:light
     steps:
       - checkout
-      - run:
-          name: Set creds
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              mkdir ~/.aws
-              echo [default] >> ~/.aws/credentials
-              echo aws_access_key_id=${awsa} >> ~/.aws/credentials
-              echo aws_secret_access_key=${awss} >> ~/.aws/credentials
-              echo [default] >> ~/.aws/config
-              echo region=us-west-1 >> ~/.aws/config
-              echo output=text >> ~/.aws/config
-              # export AWS_ACCESS_KEY_ID="${awsa}"
-              # export AWS_SECRET_ACCESS_KEY="${awss}"
-              # export AWS_DEFAULT_REGION="us-west-1"
-            else
-              # export AWS_ACCESS_KEY_ID=${awsa}
-              # export AWS_SECRET_ACCESS_KEY=${awss}
-              # export AWS_DEFAULT_REGION="us-west-1"
-            fi
+      - *set_creds
       - run:
           name: Build base ami
           command: packer build ./packer/packer.json
@@ -110,70 +114,53 @@ jobs:
 
 # Terraform ============================================================================================
 
-  terraform-plan:
-    docker:
-      - image: hashicorp/terraform:light
+  terraform-init:
+    <<: *terraform_config
     steps:
       - checkout
+      - *set_creds
+      - *set_terraform_environment
       - run:
-          name: Set creds
+          name: terraform fmt
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              mkdir ~/.aws
-              echo [default] >> ~/.aws/credentials
-              echo aws_access_key_id=${awsa} >> ~/.aws/credentials
-              echo aws_secret_access_key=${awss} >> ~/.aws/credentials
-              echo [default] >> ~/.aws/config
-              echo region=us-west-1 >> ~/.aws/config
-              echo output=text >> ~/.aws/config
-              export AWS_ACCESS_KEY_ID="${awsa}"
-              export AWS_SECRET_ACCESS_KEY="${awss}"
-              export AWS_DEFAULT_REGION="us-west-1"
-            else
-              export AWS_ACCESS_KEY_ID=${awsa}
-              export AWS_SECRET_ACCESS_KEY=${awss}
-              export AWS_DEFAULT_REGION="us-west-1"
+            source $BASH_ENV
+            cd environments/$TERRAFORM_ENVIRONMENT
+            if [ $(terraform fmt | grep -v .terraform | tee fmt_result.txt | wc -l) -gt 0 ]; then
+              echo "Fix terraform file format:"
+              echo
+              cat fmt_result.txt
+              rm fmt_result.txt
+              git checkout -- .
+              echo
+              echo "Please run terraform fmt"
+              exit 1
             fi
-      - run:
-          name: terraform init
-          command: cd ./terraform/ && terraform init
+      - *save_repo
+
+  terraform-plan:
+    <<: *terraform_config
+    steps:
+      - *restore_repo
+      - *set_creds
+      - *set_terraform_environment
+      - *terraform_init
       - run:
           name: terraform plan
-          command: cd ./terraform/ && terraform plan
+          command: |
+            source $BASH_ENV
+            cd environments/$TERRAFORM_ENVIRONMENT
+            terraform plan -out=../../terraform.plan
+      - persist_to_workspace:
+          root: *working_directory
+          paths:
+            - terraform.plan
 
   terraform-apply:
-    docker:
-      - image: hashicorp/terraform:light
-    steps:
-      - checkout
-      - run:
-          name: Set creds
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              mkdir ~/.aws
-              echo [default] >> ~/.aws/credentials
-              echo aws_access_key_id=${awsa} >> ~/.aws/credentials
-              echo aws_secret_access_key=${awss} >> ~/.aws/credentials
-              echo [default] >> ~/.aws/config
-              echo region=us-west-1 >> ~/.aws/config
-              echo output=text >> ~/.aws/config
-              export AWS_ACCESS_KEY_ID="${awsa}"
-              export AWS_SECRET_ACCESS_KEY="${awss}"
-              export AWS_DEFAULT_REGION="us-west-1"
-            else
-              export AWS_ACCESS_KEY_ID=${awsa}
-              export AWS_SECRET_ACCESS_KEY=${awss}
-              export AWS_DEFAULT_REGION="us-west-1"
-            fi
-      - run:
-          name: terraform init
-          command: cd ./terraform/ && terraform init
-      - run:
-          name: terraform plan
-          command: cd ./terraform/ && terraform plan
-      - run:
-          name: terraform apply
-          command: cd ./terraform/ && terraform init && terraform apply -auto-approve
+    <<: *terraform_apply
+
+  terraform-apply-after-approval:
+    <<: *terraform_apply
+
 
 # END Terraform ============================================================================================
 
@@ -187,9 +174,22 @@ workflows:
       - packer-build-ami:
           requires:
             - packer-validate
-      - terraform-plan:
+      - terraform-init:
           requires:
             - packer-build-ami
+      - terraform-plan:
+          requires:
+            - terraform-init
       - terraform-apply:
           requires:
             - terraform-plan
+          filters:
+            branches:
+              ignore:
+                - master
+      - terraform-apply-after-approval:
+          requires:
+            - terraform-plan
+          filters:
+            branches:
+              only: master
