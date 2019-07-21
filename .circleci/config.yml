@@ -1,5 +1,29 @@
 version: 2
 
+references:
+
+set_creds: &set_creds
+  run:
+    name: set_creds
+    command: |
+      if [ "${CIRCLE_BRANCH}" == "master" ]; then
+        mkdir ~/.aws
+        echo [default] >> ~/.aws/credentials
+        echo aws_access_key_id=${awsa} >> ~/.aws/credentials
+        echo aws_secret_access_key=${awss} >> ~/.aws/credentials
+        echo [default] >> ~/.aws/config
+        echo region=us-west-1 >> ~/.aws/config
+        echo output=text >> ~/.aws/config
+      else
+        mkdir ~/.aws
+        echo [default] >> ~/.aws/credentials
+        echo aws_access_key_id=${awsa} >> ~/.aws/credentials
+        echo aws_secret_access_key=${awss} >> ~/.aws/credentials
+        echo [default] >> ~/.aws/config
+        echo region=us-west-1 >> ~/.aws/config
+        echo output=text >> ~/.aws/config
+      fi
+
 jobs:
 
   packer-validate:
@@ -16,25 +40,7 @@ jobs:
       - image: hashicorp/packer:light
     steps:
       - checkout
-      - run:
-          name: Set creds
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              mkdir ~/.aws
-              echo [default] >> ~/.aws/credentials
-              echo aws_access_key_id=${awsa} >> ~/.aws/credentials
-              echo aws_secret_access_key=${awss} >> ~/.aws/credentials
-              echo [default] >> ~/.aws/config
-              echo region=us-west-1 >> ~/.aws/config
-              echo output=text >> ~/.aws/config
-              export AWS_ACCESS_KEY_ID="${awsa}"
-              export AWS_SECRET_ACCESS_KEY="${awss}"
-              export AWS_DEFAULT_REGION="us-west-1"
-            else
-              export AWS_ACCESS_KEY_ID=${awsa}
-              export AWS_SECRET_ACCESS_KEY=${awss}
-              export AWS_DEFAULT_REGION="us-west-1"
-            fi
+      - *set_creds
       - run:
           name: Build base ami
           command: packer build ./packer/packer.json
@@ -45,25 +51,7 @@ jobs:
       - image: hashicorp/terraform:light
     steps:
       - checkout
-      - run:
-          name: Set creds
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              mkdir ~/.aws
-              echo [default] >> ~/.aws/credentials
-              echo aws_access_key_id=${awsa} >> ~/.aws/credentials
-              echo aws_secret_access_key=${awss} >> ~/.aws/credentials
-              echo [default] >> ~/.aws/config
-              echo region=us-west-1 >> ~/.aws/config
-              echo output=text >> ~/.aws/config
-              export AWS_ACCESS_KEY_ID="${awsa}"
-              export AWS_SECRET_ACCESS_KEY="${awss}"
-              export AWS_DEFAULT_REGION="us-west-1"
-            else
-              export AWS_ACCESS_KEY_ID=${awsa}
-              export AWS_SECRET_ACCESS_KEY=${awss}
-              export AWS_DEFAULT_REGION="us-west-1"
-            fi
+      - *set_creds
       - run:
           name: terraform init
           command: cd ./terraform/ && terraform init
@@ -76,25 +64,7 @@ jobs:
       - image: hashicorp/terraform:light
     steps:
       - checkout
-      - run:
-          name: Set creds
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              mkdir ~/.aws
-              echo [default] >> ~/.aws/credentials
-              echo aws_access_key_id=${awsa} >> ~/.aws/credentials
-              echo aws_secret_access_key=${awss} >> ~/.aws/credentials
-              echo [default] >> ~/.aws/config
-              echo region=us-west-1 >> ~/.aws/config
-              echo output=text >> ~/.aws/config
-              export AWS_ACCESS_KEY_ID="${awsa}"
-              export AWS_SECRET_ACCESS_KEY="${awss}"
-              export AWS_DEFAULT_REGION="us-west-1"
-            else
-              export AWS_ACCESS_KEY_ID=${awsa}
-              export AWS_SECRET_ACCESS_KEY=${awss}
-              export AWS_DEFAULT_REGION="us-west-1"
-            fi
+      - *set_creds
       - run:
           name: terraform init
           command: cd ./terraform/ && terraform init
