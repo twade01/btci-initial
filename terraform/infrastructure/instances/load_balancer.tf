@@ -19,6 +19,20 @@ resource "aws_lb_target_group" "web" {
   vpc_id   = "${var.vpc-id}"
 }
 
+resource "aws_lb_target_group" "web2" {
+  name     = "web2-target-group-${var.environment}"
+  port     = "18556"
+  protocol = "TCP"
+  vpc_id   = "${var.vpc-id}"
+}
+
+resource "aws_lb_target_group" "web3" {
+  name     = "web3-target-group-${var.environment}"
+  port     = "18555"
+  protocol = "TCP"
+  vpc_id   = "${var.vpc-id}"
+}
+
 resource "aws_lb_listener" "web" {
   load_balancer_arn = "${aws_lb.web.arn}"
   port              = "8333"
@@ -36,4 +50,20 @@ resource "aws_lb_target_group_attachment" "web" {
   target_group_arn = "${aws_lb_target_group.web.arn}"
   target_id        = "${element(aws_instance.web.*.id, count.index)}"
   port             = "8333"
+}
+
+resource "aws_lb_target_group_attachment" "web2" {
+  count = "${var.countnum}"
+
+  target_group_arn = "${aws_lb_target_group.web.arn}"
+  target_id        = "${element(aws_instance.web.*.id, count.index)}"
+  port             = "18556"
+}
+
+resource "aws_lb_target_group_attachment" "web3" {
+  count = "${var.countnum}"
+
+  target_group_arn = "${aws_lb_target_group.web.arn}"
+  target_id        = "${element(aws_instance.web.*.id, count.index)}"
+  port             = "18555"
 }
