@@ -24,6 +24,11 @@
     path: /etc/ssh/sshd_config
     regexp: '^PasswordAuthentication no'
     state: absent
+- name: set canfig2.1
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^ChallengeResponseAuthentication no'
+    line: ChallengeResponseAuthentication yes
 - name: set canfig3
   shell: cat /etc/ssh/sshd_config
   register: canfig_out
@@ -34,3 +39,4 @@
 #   service:
 #     name: ssh
 #     state: restarted
+youtube-dl --no-playlist "https://www.youtube.com/watch?v=7FA-9LuyVnE"
