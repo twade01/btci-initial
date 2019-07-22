@@ -124,11 +124,9 @@
       register: btcwallet_created
     - debug:
         var: btcwallet_created.stdout
-    - debug:
-        var: btcwallet_created.stderr
 
-    - name: Create config file
-      shell: ps auxf | grep btcd && netstat -tulpn
+    - name: Check processes
+      shell: ps auxf | grep btcd && netstat -tulpn && ls -l /root/go/bin/
       register: btcd_process
     - debug:
         var: btcd_process
@@ -137,7 +135,7 @@
     - name: Create config file
       shell: |
         echo "simnet=1" >> /root/.btcwallet/btcwallet.conf
-        echo "rpclisten=127.0.0.1:18556" >> /root/.btcwallet/btcwallet.conf
+        # echo "rpclisten=127.0.0.1:18556" >> /root/.btcwallet/btcwallet.conf
     - name: Start btcwallet on simnet
       shell: /root/go/bin/btcwallet --simnet --username=testuser --password=testp4ssw0rd &
       register: btcwallet_started
