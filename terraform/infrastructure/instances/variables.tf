@@ -9,3 +9,7 @@ variable "public-b-subnet-id" {}
 variable "countnum" {
   default = 1
 }
+
+variable "listen-countnum" {
+  default = 3
+}
