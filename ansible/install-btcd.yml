@@ -121,12 +121,9 @@
         exit 0
       args:
         executable: /usr/bin/expect
-      # shell: |
-      #   /root/go/bin/btcwallet --simnet --create
-
       register: btcwallet_created
     - debug:
-        var: btcwallet_created
+        var: btcwallet_created.stdout_lines
 
   # Start btcwallet on simnet
     - name: Start btcwallet on simnet
