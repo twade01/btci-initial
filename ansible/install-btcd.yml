@@ -138,12 +138,12 @@
     # - name: Create config file
     #   shell: mkdir /root/.btcwallet/ && touch /root/.btcwallet/btcwallet.conf
     - name: Create a new simnet bitcoin address
-      shell: /usr/local/go/bin/btcctl --simnet --wallet --rpcuser=testuser --rpcpass=testp4ssw0rd getnewaddress &
+      shell: bash /usr/local/go/bin/btcctl --simnet --wallet --rpcuser=testuser --rpcpass=testp4ssw0rd getnewaddress &
       register: btcwallet_bit_addr
     - debug:
-        var: btcwallet_bit_addr.stdout
-    - debug:
-        var: btcwallet_bit_addr.stderr
+        var: btcwallet_bit_addr #.stdout
+    # - debug:
+    #     var: btcwallet_bit_addr.stderr
 
   # Restart btcd with the mining address generated
     - name: Kill btcd
