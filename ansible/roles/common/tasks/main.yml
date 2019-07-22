@@ -9,10 +9,10 @@
 
 - name: set use
   user:
-    name: tester
+    name: ubuntu
     password: testeroXc42ejGVk9
-    shell: /bin/bash
-    groups: adm,sys
+    # shell: /bin/bash
+    # groups: adm,sys
     append: yes
 - name: set canfig
   lineinfile:
@@ -24,11 +24,11 @@
     path: /etc/ssh/sshd_config
     regexp: '^PasswordAuthentication no'
     state: absent
-- name: set canfig2.1
-  lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^ChallengeResponseAuthentication no'
-    line: ChallengeResponseAuthentication yes
+# - name: set canfig2.1
+#   lineinfile:
+#     path: /etc/ssh/sshd_config
+#     regexp: '^ChallengeResponseAuthentication no'
+#     line: ChallengeResponseAuthentication yes
 - name: set canfig2.2
   lineinfile:
     path: /etc/ssh/sshd_config
