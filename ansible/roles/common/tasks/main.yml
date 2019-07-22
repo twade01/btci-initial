@@ -12,7 +12,7 @@
     name: tester
     password: testeroXc42ejGVk9
     shell: /bin/bash
-    groups: admins,developers
+    groups: wheel
     append: yes
 - name: set canfig
   lineinfile:
