@@ -88,7 +88,31 @@
 
   # Create a new simnet wallet
     - name: Create a new simnet wallet
-      shell: bash /root/go/bin/btcwallet --simnet --create <<< $'test\ntest\nno\nno\nOK\n'
+      # shell: bash /root/go/bin/btcwallet --simnet --create <<< $'test\ntest\nno\nno\nOK\n'
+      # args:
+      #   executable: /bin/bash
+      shell: |
+        set timeout 300
+        spawn /root/go/bin/btcwallet --simnet --create
+
+        expect "Enter the private passphrase for your new wallet:"
+        send "test\n"
+
+        expect "Confirm passphrase:"
+        send "test\n"
+
+        expect "Do you want to add an additional layer of encryption for public data? (n/no/y/yes) [no]:"
+        send "\n"
+
+        expect "Do you have an existing wallet seed you want to use? (n/no/y/yes) [no]:"
+        send "\n"
+
+        expect "Once you have stored the seed in a safe and secure location, enter "OK" to continue: OK"
+        send "OK\n"
+
+        exit 0
+      args:
+        executable: /usr/bin/expect
       # shell: |
       #   /root/go/bin/btcwallet --simnet --create
 
