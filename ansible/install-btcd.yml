@@ -128,6 +128,8 @@
         var: btcwallet_created.stderr
 
   # Start btcwallet on simnet
+    - name: Create config file
+      shell: mkdir /root/.btcwallet/ && echo "" >> /root/.btcwallet/btcwallet.conf
     - name: Start btcwallet on simnet
       shell: /root/go/bin/btcwallet --simnet --username=testuser --password=testp4ssw0rd &
       register: btcwallet_started
@@ -135,8 +137,6 @@
         var: btcwallet_started
 
   # Create a new simnet bitcoin address
-    # - name: Create config file
-    #   shell: mkdir /root/.btcwallet/ && touch /root/.btcwallet/btcwallet.conf
     - name: Create a new simnet bitcoin address
       shell: sudo /usr/local/go/bin/btcctl --simnet --wallet --rpcuser=testuser --rpcpass=testp4ssw0rd getnewaddress &
       args:
