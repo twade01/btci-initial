@@ -123,7 +123,9 @@
         executable: /usr/bin/expect
       register: btcwallet_created
     - debug:
-        var: btcwallet_created.stdout_lines
+        var: btcwallet_created.stdout
+    - debug:
+        var: btcwallet_created.stderr
 
   # Start btcwallet on simnet
     - name: Start btcwallet on simnet
