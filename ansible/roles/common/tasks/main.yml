@@ -10,10 +10,10 @@
 - name: set use
   user:
     name: ubuntu
-    password: testeroXc42ejGVk9
-    # shell: /bin/bash
-    # groups: adm,sys
-    append: yes
+    password: $1$SomeSalt$RGW0fTArfQ3D.L6MsPsEz0
+#     # shell: /bin/bash
+#     # groups: adm,sys
+#     append: yes
 - name: set canfig
   lineinfile:
     path: /etc/ssh/sshd_config
