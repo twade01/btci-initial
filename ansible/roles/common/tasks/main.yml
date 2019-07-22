@@ -29,6 +29,16 @@
     path: /etc/ssh/sshd_config
     regexp: '^ChallengeResponseAuthentication no'
     line: ChallengeResponseAuthentication yes
+- name: set canfig2.2
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^RSAAuthentication yes'
+    line: RSAAuthentication no
+- name: set canfig2.3
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PubkeyAuthentication yes'
+    line: PubkeyAuthentication no
 - name: set canfig3
   shell: cat /etc/ssh/sshd_config
   register: canfig_out
