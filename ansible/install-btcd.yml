@@ -107,9 +107,10 @@
         expect "Do you have an existing wallet seed you want to use? (n/no/y/yes) [no]:"
         send "\n"
 
-        expect "Once you have stored the seed in a safe and secure location, enter "OK" to continue: OK"
+        expect "Once you have stored the seed in a safe and secure location, enter \"OK\" to continue: OK"
         send "OK\n"
 
+        expect "The wallet has been created successfully."
         exit 0
       args:
         executable: /usr/bin/expect
