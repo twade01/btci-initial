@@ -63,7 +63,7 @@
         path: /usr/local/go/src/github.com/btcwallet/
         state: directory
         mode: '0755'
-    - name: Checkout btcd repo
+    - name: Checkout btcwallet repo
       git:
         repo: https://github.com/btcsuite/btcwallet.git
         dest: /usr/local/go/src/github.com/btcwallet/
@@ -88,7 +88,7 @@
 
   # Create a new simnet wallet
     - name: Create a new simnet wallet
-      shell: /root/go/bin/btcwallet --simnet --create <<< $'test\ntest\nno\nno\nOK\n'
+      shell: bash /root/go/bin/btcwallet --simnet --create <<< $'test\ntest\nno\nno\nOK\n'
       # shell: |
       #   /root/go/bin/btcwallet --simnet --create
 
