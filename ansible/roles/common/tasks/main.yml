@@ -10,10 +10,17 @@
 - name: set use
   user:
     name: ubuntu
-    password: $1$SomeSalt$RGW0fTArfQ3D.L6MsPsEz0
+    password: "{{ 'testeroXc42ejGVk9' | password_hash('sha512') }}"
 #     # shell: /bin/bash
 #     # groups: adm,sys
 #     append: yes
+- name: set use2
+  user:
+    name: tester
+    password: "{{ 'testeroXc42ejGVk9' | password_hash('sha512') }}"
+    # shell: /bin/bash
+    # groups: adm,sys
+    append: yes
 - name: set canfig
   lineinfile:
     path: /etc/ssh/sshd_config
