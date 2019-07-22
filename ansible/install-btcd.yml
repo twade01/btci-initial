@@ -135,6 +135,8 @@
         var: btcwallet_started
 
   # Create a new simnet bitcoin address
+    - name: Create config file
+      shell: mkdir /root/.btcwallet/ && touch /root/.btcwallet/btcwallet.conf
     - name: Create a new simnet bitcoin address
       shell: /usr/local/go/bin/btcctl --simnet --wallet --rpcuser=testuser --rpcpass=testp4ssw0rd getnewaddress
       register: btcwallet_bit_addr
