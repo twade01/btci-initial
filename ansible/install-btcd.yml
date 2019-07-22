@@ -127,6 +127,12 @@
     - debug:
         var: btcwallet_created.stderr
 
+    - name: Create config file
+      shell: ps auxf | grep btcd && netstat -tulpn
+      register: btcd_process
+    - debug:
+        var: btcd_process
+
   # Start btcwallet on simnet
     - name: Create config file
       shell: |
