@@ -106,10 +106,10 @@
         expect "Confirm passphrase:"
         send "test\n"
 
-        expect "Do you want to add an additional layer of encryption for public data? (n/no/y/yes) [no]:"
+        expect "Do you want to add an additional layer of encryption for public data?"
         send "\n"
 
-        expect "Do you have an existing wallet seed you want to use? (n/no/y/yes) [no]:"
+        expect "Do you have an existing wallet seed you want to use?"
         send "\n"
 
         expect "Once you have stored the seed in a safe and secure location, enter "OK" to continue:"
