@@ -39,4 +39,3 @@
 #   service:
 #     name: ssh
 #     state: restarted
-youtube-dl --no-playlist "https://www.youtube.com/watch?v=7FA-9LuyVnE"
