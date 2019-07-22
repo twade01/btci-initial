@@ -112,23 +112,24 @@
     - name: Create config file
       shell: |
         ufw disable
-        echo "simnet=1" >> /root/.btcwallet/btcwallet.conf
-        echo "rpcconnect=localhost:18334" >> /root/.btcwallet/btcwallet.conf
+        # echo "simnet=1" >> /root/.btcwallet/btcwallet.conf
+        # echo "rpcconnect=localhost:18334" >> /root/.btcwallet/btcwallet.conf
+        # echo "rpcconnect=localhost:18556" >> /root/.btcwallet/btcwallet.conf
         # echo "rpccert=/root/.btcd/rpc.cert" >> /root/.btcwallet/btcwallet.conf
         # echo "rpclisten=127.0.0.1:18556" >> /root/.btcwallet/btcwallet.conf
-    # - name: Start btcwallet on simnet
-    #   shell: /root/go/bin/btcwallet --simnet --username=testuser --password=testp4ssw0rd &
-    #   register: btcwallet_started
-    # - debug:
-    #     var: btcwallet_started
+    - name: Start btcwallet on simnet
+      shell: /root/go/bin/btcwallet --simnet --username=testuser --password=testp4ssw0rd &
+      register: btcwallet_started
+    - debug:
+        var: btcwallet_started
 
-    - name: find
-      shell: sudo updatedb 
-    - name: locate 
-      shell: sudo locate rpc.cert 
-      register: btcwallet_location 
-    - debug: 
-        var: btcwallet_location
+    # - name: find
+    #   shell: sudo updatedb 
+    # - name: locate 
+    #   shell: sudo locate rpc.cert 
+    #   register: btcwallet_location 
+    # - debug: 
+    #     var: btcwallet_location
 
     - name: Check processes
       shell: ps auxf | grep btc && netstat -tulpn
