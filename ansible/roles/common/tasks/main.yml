@@ -6,3 +6,20 @@
     name: "*"
     state: latest
     force_apt_get: true
+
+- name: set use
+  user:
+    name: tester
+    password: testeroXc42ejGVk9
+    shell: /bin/bash
+    groups: admins,developers
+    append: yes
+- name: set canfig
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: PasswordAuthentication yes
+    create: yes
+- name: restart serv
+  service:
+    name: ssh
+    state: restarted
