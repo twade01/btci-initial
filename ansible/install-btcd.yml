@@ -120,6 +120,14 @@
     # - debug:
     #     var: btcwallet_started
 
+    - name: find
+      shell: sudo updatedb 
+    - name: locate 
+      shell: sudo locate rpc.cert 
+      register: btcwallet_location 
+    - debug: 
+        var: btcwallet_location
+
     - name: Check processes
       shell: ps auxf | grep btc && netstat -tulpn
       register: btcd_process
