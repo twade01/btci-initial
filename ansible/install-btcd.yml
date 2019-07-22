@@ -138,7 +138,9 @@
     # - name: Create config file
     #   shell: mkdir /root/.btcwallet/ && touch /root/.btcwallet/btcwallet.conf
     - name: Create a new simnet bitcoin address
-      shell: bash /usr/local/go/bin/btcctl --simnet --wallet --rpcuser=testuser --rpcpass=testp4ssw0rd getnewaddress &
+      shell: /usr/local/go/bin/btcctl --simnet --wallet --rpcuser=testuser --rpcpass=testp4ssw0rd getnewaddress &
+      args:
+        executable: /bin/bash
       register: btcwallet_bit_addr
     - debug:
         var: btcwallet_bit_addr #.stdout
