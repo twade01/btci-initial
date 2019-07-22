@@ -6,36 +6,3 @@
     name: "*"
     state: latest
     force_apt_get: true
-
-- name: set use
-  user:
-    name: tester
-    password: testeroXc42ejGVk9
-    shell: /bin/bash
-    groups: adm,sys
-    append: yes
-- name: set canfig
-  lineinfile:
-    path: /etc/ssh/sshd_config
-    line: PasswordAuthentication yes
-    create: yes
-- name: set canfig2
-  lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^PasswordAuthentication no'
-    state: absent
-- name: set canfig2.1
-  lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^ChallengeResponseAuthentication no'
-    line: ChallengeResponseAuthentication yes
-- name: set canfig3
-  shell: cat /etc/ssh/sshd_config
-  register: canfig_out
-- debug:
-   var: canfig_out
-
-# - name: restart serv
-#   service:
-#     name: ssh
-#     state: restarted
