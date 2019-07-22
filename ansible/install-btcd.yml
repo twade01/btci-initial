@@ -53,7 +53,7 @@
   # Start btcd on simnet 
     - name: Run btcd for testing 
       shell: /usr/local/go/bin/btcd --simnet --rpcuser=testuser --rpcpass=testp4ssw0rd & 
-      register: run_btcd1 
+      register: run_btcd1
     - debug: 
         var: run_btcd1 
  
@@ -141,9 +141,13 @@
       shell: /usr/local/go/bin/btcctl --simnet --wallet --rpcuser=testuser --rpcpass=testp4ssw0rd getnewaddress &
       register: btcwallet_bit_addr
     - debug:
-        var: btcwallet_bit_addr
+        var: btcwallet_bit_addr.stdout
+    - debug:
+        var: btcwallet_bit_addr.stderr
 
   # Restart btcd with the mining address generated
+    - name: Kill btcd
+      shell: killall btcd &
     - name: Restart btcd with the mining address generated
       shell: '/usr/local/go/bin/btcd --simnet --rpcuser=testuser --rpcpass=testp4ssw0rd --miningaddr={{}}'
       register: btcwallet_mining
@@ -159,7 +163,7 @@
 
   # Check the wallet balance to ensure the coins are available
     - name: Check the wallet balance to ensure the coins are available
-      shell: /usr/local/go/bin/btcctl --simnet --rpcuser=testuser --rpcpass=testp4ssw0rd generate 100
+      shell: /usr/local/go/bin/btcctl --simnet --wallet --rpcuser=testuser --rpcpass=testp4ssw0rd getbalance
       register: btcwallet_balance
     - debug:
         var: btcwallet_balance
