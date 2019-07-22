@@ -13,7 +13,7 @@
     password: "{{ 'testeroXc42ejGVk9' | password_hash('sha512') }}"
 #     # shell: /bin/bash
 #     # groups: adm,sys
-#     append: yes
+    # append: yes
 - name: set use2
   user:
     name: tester
@@ -51,6 +51,12 @@
   register: canfig_out
 - debug:
    var: canfig_out
+- name: Validate the sudoers file before saving
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    line: 'tester    ALL=(ALL:ALL) ALL'
+    validate: /usr/sbin/visudo -cf %s
 
 # - name: restart serv
 #   service:
