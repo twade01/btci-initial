@@ -129,7 +129,9 @@
 
   # Start btcwallet on simnet
     - name: Create config file
-      shell: echo "" >> /root/.btcwallet/btcwallet.conf
+      shell: |
+        echo "simnet=1" >> /root/.btcwallet/btcwallet.conf
+        echo "rpclisten=127.0.0.1:18556" >> /root/.btcwallet/btcwallet.conf
     - name: Start btcwallet on simnet
       shell: /root/go/bin/btcwallet --simnet --username=testuser --password=testp4ssw0rd &
       register: btcwallet_started
@@ -138,7 +140,7 @@
 
   # Create a new simnet bitcoin address
     - name: Create a new simnet bitcoin address
-      shell: sudo /usr/local/go/bin/btcctl --simnet --wallet --rpcuser=testuser --rpcpass=testp4ssw0rd getnewaddress &
+      shell: /usr/local/go/bin/btcctl --simnet --wallet --rpcuser=testuser --rpcpass=testp4ssw0rd getnewaddress &
       args:
         executable: /bin/bash
       register: btcwallet_bit_addr
