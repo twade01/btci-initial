@@ -88,7 +88,7 @@
 
   # Create a new simnet wallet
     - name: Create a new simnet wallet
-      shell: /root/go/bin/btcwallet --simnet --create <<< $'test'
+      shell: /root/go/bin/btcwallet --simnet --create <<< $'test\ntest\nno\nno\nOK\n'
       # shell: |
       #   /root/go/bin/btcwallet --simnet --create
 
