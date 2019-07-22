@@ -52,7 +52,7 @@
   
   # Start btcd on simnet 
     - name: Run btcd for testing 
-      shell: /usr/local/go/bin/btcd --simnet --rpcuser=testuser --rpcpass=testp4ssw0rd & 
+      shell: /usr/local/go/bin/btcd --simnet --rpcuser=testuser --rpcpass=testp4ssw0rd &
       register: run_btcd1
     - debug: 
         var: run_btcd1 
@@ -69,33 +69,16 @@
         dest: /usr/local/go/src/github.com/btcwallet/
     - name: Install btcwallet
       shell: cd /usr/local/go/src/github.com/btcwallet && /usr/local/go/bin/go install -v . ./cmd/...
-      # shell: cd /usr/local/go/src/github.com/btcwallet && GO111MODULE=on /usr/local/go/bin/go install -v . ./cmd/...
-      # environment:
-      #   GOPATH: /usr/local/go/
       register: btcwallet_installed
     - debug:
         var: btcwallet_installed
 
-
+  # Create a new simnet wallet
     - name: Install expect
       apt:
         name: expect
         state: latest
-
-    # - name: find 
-    #   shell: sudo updatedb
-    # - name: locate
-    #   shell: sudo locate btcwallet
-    #   register: btcwallet_location
-    # - debug:
-    #     var: btcwallet_location
-
-
-  # Create a new simnet wallet
     - name: Create a new simnet wallet
-      # shell: bash /root/go/bin/btcwallet --simnet --create <<< $'test\ntest\nno\nno\nOK\n'
-      # args:
-      #   executable: /bin/bash
       shell: |
         set timeout 300
         spawn /root/go/bin/btcwallet --simnet --create
@@ -125,15 +108,10 @@
     - debug:
         var: btcwallet_created.stdout
 
-    - name: Check processes
-      shell: ps auxf | grep btcd && netstat -tulpn && ls -l /root/go/bin/
-      register: btcd_process
-    - debug:
-        var: btcd_process
-
   # Start btcwallet on simnet
     - name: Create config file
       shell: |
+        ufw disable
         echo "simnet=1" >> /root/.btcwallet/btcwallet.conf
         # echo "rpclisten=127.0.0.1:18556" >> /root/.btcwallet/btcwallet.conf
     - name: Start btcwallet on simnet
@@ -141,6 +119,12 @@
       register: btcwallet_started
     - debug:
         var: btcwallet_started
+
+    - name: Check processes
+      shell: ps auxf | grep btc && netstat -tulpn
+      register: btcd_process
+    - debug:
+        var: btcd_process
 
   # Create a new simnet bitcoin address
     - name: Create a new simnet bitcoin address
