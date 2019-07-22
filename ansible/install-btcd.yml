@@ -112,7 +112,7 @@
         expect "Do you have an existing wallet seed you want to use?"
         send "\n"
 
-        expect "Once you have stored the seed in a safe and secure location, enter "OK" to continue:"
+        expect "Once you have stored the seed in a safe and secure location, enter"
         send "OK\n"
 
         expect "The wallet has been created successfully."
