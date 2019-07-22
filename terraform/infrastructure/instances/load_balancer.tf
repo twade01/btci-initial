@@ -70,7 +70,7 @@ resource "aws_lb_target_group_attachment" "web" {
   count = "${var.countnum}"
 
   target_group_arn = "${aws_lb_target_group.web.arn}"
-  target_id        = "${element(aws_instance.web.*.id, count.index)}"
+  target_id        = "${element(aws_instance.web.*.id, count)}"
   port             = "8333"
 }
 
@@ -78,7 +78,7 @@ resource "aws_lb_target_group_attachment" "web2" {
   count = "${var.countnum}"
 
   target_group_arn = "${aws_lb_target_group.web2.arn}"
-  target_id        = "${element(aws_instance.web.*.id, count.index)}"
+  target_id        = "${element(aws_instance.web.*.id, count)}"
   port             = "18556"
 }
 
@@ -86,6 +86,6 @@ resource "aws_lb_target_group_attachment" "web3" {
   count = "${var.countnum}"
 
   target_group_arn = "${aws_lb_target_group.web3.arn}"
-  target_id        = "${element(aws_instance.web.*.id, count.index)}"
+  target_id        = "${element(aws_instance.web.*.id, count)}"
   port             = "18555"
 }
