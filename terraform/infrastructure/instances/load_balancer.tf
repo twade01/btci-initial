@@ -67,7 +67,8 @@ resource "aws_lb_listener" "web3" {
 }
 
 resource "aws_lb_target_group_attachment" "web" {
-  count = "${var.countnum}"
+  # count = "${var.countnum}"
+  count = "0"
 
   target_group_arn = "${aws_lb_target_group.web.arn}"
   # target_id        = "${aws_instance.web.id}"
@@ -76,7 +77,8 @@ resource "aws_lb_target_group_attachment" "web" {
 }
 
 resource "aws_lb_target_group_attachment" "web2" {
-  count = "${var.countnum}"
+  # count = "${var.countnum}"
+  count = "0"
 
   target_group_arn = "${aws_lb_target_group.web2.arn}"
   # target_id        = "${aws_instance.web.id}"
@@ -85,7 +87,8 @@ resource "aws_lb_target_group_attachment" "web2" {
 }
 
 resource "aws_lb_target_group_attachment" "web3" {
-  count = "${var.countnum}"
+  # count = "${var.countnum}"
+  count = "0"
 
   target_group_arn = "${aws_lb_target_group.web3.arn}"
   # target_id        = "${aws_instance.web.id}"
