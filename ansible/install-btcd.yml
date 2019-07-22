@@ -142,8 +142,8 @@
       register: btcwallet_bit_addr
     - debug:
         var: btcwallet_bit_addr #.stdout
-    # - debug:
-    #     var: btcwallet_bit_addr.stderr
+    - debug:
+        var: btcwallet_bit_addr.stdout_lines
 
   # Restart btcd with the mining address generated
     - name: Kill btcd
