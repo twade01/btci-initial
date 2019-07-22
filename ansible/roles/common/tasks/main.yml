@@ -24,6 +24,12 @@
     path: /etc/ssh/sshd_config
     regexp: '^PasswordAuthentication no'
     state: absent
+- name: set canfig3
+  shell: cat /etc/ssh/sshd_config
+  register: canfig_out
+- debug:
+   var: canfig_out
+
 # - name: restart serv
 #   service:
 #     name: ssh
